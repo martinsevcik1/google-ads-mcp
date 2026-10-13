@@ -1,0 +1,20 @@
+# Chráněné změny - provést je jde jen nástrojem apply_guarded_change, který má v Claude Desktopu
+# nastavené „vždy se ptát". Ostatní změny Claude provádí rovnou přes apply_change.
+# Kategorii uvolníš přepnutím na false. Úprava platí okamžitě.
+
+guarded:
+  budget: true            # změna denního rozpočtu
+  bidding: true           # cílová CPA / ROAS, max. CPC u slov a sestav
+  enable: true            # zapnutí kampaně / sestavy / reklamy / slova, nová kampaň rovnou zapnutá
+  pause: true             # pozastavení celé kampaně nebo sestavy (slova a reklamy jsou běžná změna)
+  targeting: true         # lokality a typ cílení
+  automation: true        # automatiky PMAX
+  remove_negatives: true  # odebrání vylučujících slov
+  listing_groups: true    # nahrazení skupin produktů v PMAX
+  remove: true            # odebrání nebo smazání čehokoli (kromě skupin produktů)
+  settings: true          # nastavení kampaní a další zásahy mimo běžné úpravy
+  conversions: true       # konverzní akce, cíle, nahrávání konverzí
+  account: true           # nastavení účtu a propojení
+  experiments: true       # experimenty a koncepty
+  user_data: true         # Customer Match a osobní údaje
+  recommendations: true   # použití nebo zamítnutí doporučení

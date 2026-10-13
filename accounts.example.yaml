@@ -1,0 +1,23 @@
+# Seznam účtů, se kterými MCP smí pracovat. Cokoli mimo tento seznam odmítne - i čtení.
+# Úpravy platí okamžitě, restart není potřeba.
+#
+# default_login_customer_id = MCC (manažerský účet), přes který máš k účtům přístup.
+# Když k účtům přistupuješ napřímo bez MCC, smaž ho nebo dej null.
+# U účtu, ke kterému se jde přes jiné MCC, doplň vlastní login_customer_id.
+# ID účtů a MCC vypíše:  install.py  (krok "Vypsat účty"), případně check_access.py --list
+#
+# clients_root = složka se složkami klientů. Relativní cesta se počítá od složky, kde leží tento soubor.
+# folder = složka klienta. Obrázky a videa z disku MCP do účtu nahraje JEN z této složky - pojistka
+# proti nahrání podkladů jednoho klienta do účtu jiného. Do složky klienta se ukládají i exporty a náhledy.
+
+# dpa = máš s Anthropicem smlouvu o zpracování osobních údajů (DPA)? Platí pro plány Claude Team,
+#   Enterprise a API. U Free, Pro a Max nech false: MCP pak do konverzace nepouští osobní údaje
+#   (seznamy zákazníků, kontaktní údaje, vyhledávací dotazy s e-mailem nebo telefonem).
+dpa: false
+
+default_login_customer_id: "123-456-7890"
+clients_root: klienti
+
+accounts:
+  "111-222-3333": {name: klient-a.cz, folder: klient-a}
+  "444-555-6666": {name: klient-b.cz, folder: klient-b, login_customer_id: null}

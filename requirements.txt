@@ -1,0 +1,6 @@
+google-ads==33.0.0
+mcp>=1.12,<2
+google-auth-oauthlib>=1.2
+PyYAML>=6.0
+pydantic>=2.7
+Pillow>=10.0

@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+logs/
+state/
+klienti/
+nahledy_zmen/
+accounts.yaml
+google-ads.yaml
+client_secret*.json
+*.backup-*.json
+.DS_Store
