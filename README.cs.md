@@ -154,20 +154,46 @@ když se blíží vypnutí verze, kterou MCP používá.
 ## Kam tečou data
 
 - **Server sám** běží u tebe na počítači a komunikuje jen s Google Ads API. Žádný další server mezi tím není.
+- **Přihlašovací údaje** (refresh token v `~/.google-ads`) zůstávají na tvém počítači. Server je čte lokálně a do
+  konverzace je nikdy nevrací.
 - **Výsledky nástrojů jdou do konverzace s Claudem**, tedy k Anthropicu: názvy kampaní, čísla z reportů,
-  vyhledávací dotazy, texty reklam i všechno ostatní, co si Claude přečte. Zpracovávají se stejně jako
-  cokoli jiného, co do konverzace napíšeš, podle podmínek tvého plánu Claude a nastavení soukromí
-  (včetně toho, jestli se konverzace smí použít k trénování modelů).
-- **Přihlašovací údaje** (refresh token v `~/.google-ads`) zůstávají na tvém počítači. Server je čte lokálně a do konverzace
-  je nikdy nevrací.
-- Pracuješ s daty klientů. Pokud to tvoje smlouvy s klienty nebo agenturou řeší, ověř si, že zpracování
-  přes AI nástroj třetí strany je v pořádku.
+  vyhledávací dotazy, texty reklam i všechno ostatní, co si Claude přečte. Anthropic je zpracovává v USA nebo jinde
+  ve světě a pomáhají mu s tím subdodavatelé ([seznam](https://www.anthropic.com/subprocessors)). Co s nimi smí
+  dělat, určují podmínky tvého plánu Claude.
+
+### Než to pustíš na klientský účet
+
+1. **Smí data klienta k Anthropicu?** Výkon kampaní, rozpočty nebo tržby nejsou osobní údaje, ale často je chrání
+   NDA nebo smlouva s klientem. Ověř si v ní (a ve smlouvě s agenturou, pokud pracuješ přes ni), že data smíš
+   předat poskytovateli AI v USA nebo jinde mimo EU, včetně jeho subdodavatelů. Když to smlouva neřeší nebo
+   zakazuje, potřebuješ souhlas klienta.
+2. **Pracuješ v plánu s obchodními podmínkami?** Claude Team (od dvou míst), Enterprise a API mají smlouvu o
+   zpracování osobních údajů (DPA) a Anthropic na datech netrénuje. Free, Pro a Max jsou spotřebitelské plány bez
+   DPA a trénování v nich vypíná jen přepínač v nastavení. Na klientská data je nepoužívej.
+3. **Jsou v datech osobní údaje?** Nech výchozí `dpa: false` (viz níže). `dpa: true` zapni, jen když máš DPA s
+   klientem i s poskytovatelem modelu.
+4. **Musí data zůstat v EU?** Claude přímo od Anthropicu zpracování jen v EU nezaručí. Použij Claude Code s modelem
+   z Google Cloudu (Agent Platform, region `eu`) nebo z Amazon Bedrocku (evropský inference profil). DPA pak máš s
+   Googlem nebo Amazonem a platíš za skutečnou spotřebu. Nastavení přes Google Cloud krok za krokem: [Jak používat
+   Claude Code pro práci s firemními a zákaznickými
+   daty](https://www.measuredesign.cz/blog/jak-pouzivat-claude-code-pro-praci-s-firemnimi-a-zakaznickymi-daty)
+   (MeasureDesign). MCP do Claude Code přidáš takhle:
+
+   ```
+   claude mcp add --scope user google-ads -- <složka>/.venv/bin/python <složka>/server.py
+   ```
+
+   Na Windows je Python v `<složka>\.venv\Scripts\python.exe`. Pokud máš seznam účtů jinde než ve složce MCP,
+   přidej za `--scope user` i `--env ADS_ACCOUNTS_FILE=<cesta k accounts.yaml>`.
+
+Tohle není právní rada. Smlouvy si nech projít od toho, kdo ti je píše.
 
 ### Režim s DPA a bez DPA
 
-Osobní údaje by do konverzace měly jít jen tehdy, když máš s Anthropicem smlouvu o zpracování osobních údajů
-(DPA). Ta je automaticky součástí obchodních podmínek u plánů Claude Team, Enterprise a API. U plánů Free,
-Pro a Max DPA není. Proto má MCP přepínač v `accounts.yaml`:
+Osobní údaje by do konverzace měly jít jen tehdy, když máš smlouvu o zpracování osobních údajů (DPA) s klientem i s
+poskytovatelem modelu. U Anthropicu je DPA automaticky součástí obchodních podmínek plánů Claude Team, Enterprise a
+API, u Clauda přes Google Cloud nebo Amazon Bedrock ji máš s nimi. Plány Free, Pro a Max DPA nemají. Proto má MCP
+přepínač v `accounts.yaml`:
 
 ```yaml
 dpa: false   # výchozí
@@ -181,9 +207,9 @@ dpa: false   # výchozí
     a v ostatních výpisech je zamaskuje.
 - **`dpa: true`:** vše povolené. Ochrana chráněných změn a souhlas před zápisem platí v obou režimech.
 
-Aktuální režim ukáže výpis účtů. Omezení: jména a adresy, které lidé píšou do vyhledávání, strojově
-spolehlivě poznat nejde, takže je filtr nezachytí. Ve vyhledávacích dotazech jsou vzácné, ale úplně je
-vyloučit nejde.
+Aktuální režim ukáže výpis účtů. Omezení: jména a adresy, které lidé píšou do vyhledávání, strojově spolehlivě
+poznat nejde, takže je filtr nezachytí. Google Ads ale v přehledu ukazuje jen dotazy, které hledalo víc lidí, takže
+soukromé e-maily, telefony a jména se do něj skoro nedostanou.
 
 ## Bezpečnost
 

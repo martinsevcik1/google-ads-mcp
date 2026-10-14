@@ -1,5 +1,7 @@
 # Návod: Google Ads MCP od nuly
 
+English: [GUIDE.md](GUIDE.md)
+
 Tenhle návod tě provede vším, co je potřeba udělat jednou: Google účet, Google Cloud projekt, přístup
 k Google Ads API, přihlášení a instalace na Windows nebo macOS. Počítej zhruba s 30-45 minutami.
 
@@ -170,7 +172,7 @@ Instalátor se postupně ptá. Každý krok jde přeskočit a později spustit `
 6. **Vyplň seznam účtů:** otevři `accounts.yaml` (cestu ti instalátor vypsal) v textovém editoru:
 
    ```yaml
-   dpa: false                                   # true jen s plánem Claude Team, Enterprise nebo API
+   dpa: false                                   # true jen s DPA s klientem i s poskytovatelem modelu
    default_login_customer_id: "123-456-7890"   # ID MCC z výpisu, přes které účty vidíš
    clients_root: klienti
    accounts:
@@ -183,7 +185,9 @@ Instalátor se postupně ptá. Každý krok jde přeskočit a později spustit `
    - Účty máš přímo bez MCC: `default_login_customer_id: null`.
    - Účet přes jiné MCC než ostatní: k účtu přidej `login_customer_id: "ID-toho-MCC"`.
    - `folder` je složka klienta pro exporty, náhledy a obrázky. Vytvoří se sama.
-   - `dpa` viz README.cs.md, část Režim s DPA a bez DPA. Bez plánu Team, Enterprise nebo API nech `false`.
+   - `dpa` viz README.cs.md, část Režim s DPA a bez DPA. Nech `false`, pokud nemáš smlouvu o zpracování
+     osobních údajů s klientem i s poskytovatelem modelu (Claude Team, Enterprise nebo API, případně Claude
+     přes Google Cloud nebo Amazon Bedrock).
 
 7. **Ověření přístupu:** zkusí přečíst každý účet ze seznamu a vypíše, co funguje.
 8. **Zápis do Claude Desktopu:** přidá server do konfigurace Claude Desktopu (předtím ji zazálohuje).
